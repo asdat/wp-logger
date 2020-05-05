@@ -133,7 +133,7 @@ class Logger
     {
         $plugin_public = new Logger_Public($this->get_plugin_name(), $this->get_version());
 
-        $this->loader->add_action('wp_login', $plugin_public, 'login', 10, 2);
+        $this->loader->add_action('wp_login', $plugin_public, 'login');
         $this->loader->add_action('wp_logout', $plugin_public, 'logout');
     }
 

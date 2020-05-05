@@ -60,34 +60,35 @@ class Logger_Public
         $this->logger->handler(File::init('log.txt'));
     }
 
-    public function login($user_login, $user)
+    public function login($user_login)
     {
-        $this->log_user_action($user, 'logged in');
+        $this->log_user_action($user_login, 'logged in');
     }
 
     public function logout()
     {
-        $this->log_user_action(wp_get_current_user(), 'logged out');
+        $user = wp_get_current_user();
+        if($user->ID){
+            $this->log_user_action($user->user_login, 'logged out');
+        }
     }
 
     /**
      * Write current user information into log file
      *
-     * @param WP_User $user
-     * @param string $message
+     * @param string $user_login
+     * @param string $action
      */
-    protected function log_user_action(WP_User $user, $action)
+    protected function log_user_action($user_login, $action)
     {
-        if ($user->ID) {
-            $this->logger->info(
-                'User {username} {action} from {IP}',
-                [
-                    'username' => $user->user_login,
-                    'IP'       => $this->get_ip(),
-                    'action'   => $action
-                ]
-            );
-        }
+        $this->logger->info(
+            'User {username} {action} from {IP}',
+            [
+                'username' => $user_login,
+                'IP'       => $this->get_ip(),
+                'action'   => $action
+            ]
+        );
     }
 
     protected function get_ip()
