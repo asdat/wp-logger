@@ -55,36 +55,43 @@ class Logger_Public
     public function __construct($plugin_name, $version)
     {
         $this->plugin_name = $plugin_name;
-        $this->version = $version;
-        $this->logger = new AnalogLogger();
-        $this->logger->handler(File::init('log.txt'));
+        $this->version     = $version;
+        $this->logger      = new AnalogLogger();
+        $this->logger->handler(
+            File::init(ABSPATH . '/' . preg_replace('#(^\/|\/$)#i', '', get_option('log_path', '')) . '/log.txt')
+        );
     }
 
-    public function login($user_login)
+    public function login($user_login, $user)
     {
-        $this->log_user_action($user_login, 'logged in');
+        $this->log_user_action($user, 'logged in');
     }
 
     public function logout()
-    {
-        $user = wp_get_current_user();
-        if($user->ID){
-            $this->log_user_action($user->user_login, 'logged out');
-        }
+{
+        $this->log_user_action(wp_get_current_user(),'logged out');
     }
 
     /**
      * Write current user information into log file
      *
-     * @param string $user_login
+     * @param WP_User $user
      * @param string $action
      */
-    protected function log_user_action($user_login, $action)
+    protected function log_user_action($user, $action)
     {
+        if(!$user->ID) {
+            return;
+        }
+        $roles = $user->roles;
+        if(is_array($roles)) {
+            $roles = implode(',', $roles);
+        }
         $this->logger->info(
-            'User {username} {action} from {IP}',
+            'User {username}, {roles} {action} from {IP}',
             [
-                'username' => $user_login,
+                'username' => $user->user_login,
+                'roles'    => $roles,
                 'IP'       => $this->get_ip(),
                 'action'   => $action
             ]

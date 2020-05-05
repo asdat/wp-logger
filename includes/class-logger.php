@@ -100,8 +100,8 @@ class Logger
          * The class responsible for defining all actions that occur in the public-facing
          * side of the site.
          */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-logger-public.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'vendor/autoload.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-logger-public.php';
 
         $this->loader = new Logger_Loader();
 
@@ -119,7 +119,10 @@ class Logger
 
         $plugin_admin = new Logger_Admin($this->get_plugin_name(), $this->get_version());
 
+        $this->loader->add_action('admin_menu', $plugin_admin, 'add_pages');
         $this->loader->add_action('admin_init', $plugin_admin, 'settings_init');
+        $this->loader->add_option('log_path', 'wp-content/uploads');
+        $this->loader->add_setting('logger-settings', 'log_path');
     }
 
     /**
@@ -133,7 +136,7 @@ class Logger
     {
         $plugin_public = new Logger_Public($this->get_plugin_name(), $this->get_version());
 
-        $this->loader->add_action('wp_login', $plugin_public, 'login');
+        $this->loader->add_action('wp_login', $plugin_public, 'login', 10, 2);
         $this->loader->add_action('wp_logout', $plugin_public, 'logout');
     }
 
