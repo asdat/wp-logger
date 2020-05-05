@@ -64,7 +64,6 @@ class Logger
         $this->load_dependencies();
         $this->define_admin_hooks();
         $this->define_public_hooks();
-
     }
 
     /**
@@ -84,7 +83,6 @@ class Logger
      */
     private function load_dependencies()
     {
-
         /**
          * The class responsible for orchestrating the actions and filters of the
          * core plugin.
@@ -104,7 +102,6 @@ class Logger
         require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-logger-public.php';
 
         $this->loader = new Logger_Loader();
-
     }
 
     /**
@@ -116,7 +113,6 @@ class Logger
      */
     private function define_admin_hooks()
     {
-
         $plugin_admin = new Logger_Admin($this->get_plugin_name(), $this->get_version());
 
         $this->loader->add_action('admin_menu', $plugin_admin, 'add_pages');

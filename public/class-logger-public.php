@@ -50,6 +50,7 @@ class Logger_Public
      *
      * @param string $plugin_name The name of the plugin.
      * @param string $version The version of this plugin.
+     *
      * @since    1.0.0
      */
     public function __construct($plugin_name, $version)
@@ -68,8 +69,8 @@ class Logger_Public
     }
 
     public function logout()
-{
-        $this->log_user_action(wp_get_current_user(),'logged out');
+    {
+        $this->log_user_action(wp_get_current_user(), 'logged out');
     }
 
     /**
@@ -80,11 +81,11 @@ class Logger_Public
      */
     protected function log_user_action($user, $action)
     {
-        if(!$user->ID) {
+        if ( ! $user->ID) {
             return;
         }
         $roles = $user->roles;
-        if(is_array($roles)) {
+        if (is_array($roles)) {
             $roles = implode(',', $roles);
         }
         $this->logger->info(
@@ -100,11 +101,11 @@ class Logger_Public
 
     protected function get_ip()
     {
-        if ( !empty($_SERVER['HTTP_CLIENT_IP'])) {
+        if ( ! empty($_SERVER['HTTP_CLIENT_IP'])) {
             return $_SERVER['HTTP_CLIENT_IP'];
         }
 
-        if ( !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        if ( ! empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             return $_SERVER['HTTP_X_FORWARDED_FOR'];
         }
 

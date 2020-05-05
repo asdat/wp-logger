@@ -37,12 +37,13 @@ class Logger_Admin
      *
      * @param string $plugin_name The name of this plugin.
      * @param string $version The version of this plugin.
+     *
      * @since    1.0.0
      */
     public function __construct($plugin_name, $version)
     {
         $this->plugin_name = $plugin_name;
-        $this->version = $version;
+        $this->version     = $version;
     }
 
     /**
@@ -62,7 +63,7 @@ class Logger_Admin
      */
     public function add_options_page()
     {
-        if (!current_user_can('manage_options')) {
+        if ( ! current_user_can('manage_options')) {
             wp_die(__('You do not have sufficient permissions to access this page.'));
         }
 
