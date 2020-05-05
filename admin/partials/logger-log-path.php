@@ -15,5 +15,5 @@
 <div id="titlediv">
     <input type="text" name="log_path" id="log_path" required value="<?php echo $log_path; ?>" style="width:250px">
     <br>
-    <span class="description">Path on server for logs file. Please don't add slash to the beginning or the end</span>
+    <span class="description">Path on server for <a href="<?php echo $link;?>" target="_blank">logs</a> file. Please don't add slash to the beginning or the end</span>
 </div>

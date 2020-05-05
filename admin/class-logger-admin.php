@@ -92,6 +92,7 @@ class Logger_Admin
     public function log_path()
     {
         $log_path = esc_attr(get_option('log_path', ''));
+        $link     = esc_attr(get_site_url() . '/' . preg_replace('#(^\/|\/$)#i', '', $log_path) . '/log.txt');
         require_once 'partials/logger-log-path.php';
     }
 }
