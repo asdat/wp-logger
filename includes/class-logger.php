@@ -101,6 +101,7 @@ class Logger
          * side of the site.
          */
         require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-logger-public.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'vendor/autoload.php';
 
         $this->loader = new Logger_Loader();
 

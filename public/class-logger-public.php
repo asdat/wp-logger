@@ -12,6 +12,10 @@
  * @package    Logger
  * @subpackage Logger/public
  */
+
+use Analog\Logger as AnalogLogger;
+use Analog\Handler\File;
+
 class Logger_Public
 {
     /**
@@ -33,6 +37,15 @@ class Logger_Public
     private $version;
 
     /**
+     * Log writer wrapper.
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      AnalogLogger $logger Logger wrapper.
+     */
+    private $logger;
+
+    /**
      * Initialize the class and set its properties.
      *
      * @param string $plugin_name The name of the plugin.
@@ -43,6 +56,8 @@ class Logger_Public
     {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
+        $this->logger = new AnalogLogger;
+        $this->logger->handler(File::init('log.txt'));
     }
 
     public function login()
