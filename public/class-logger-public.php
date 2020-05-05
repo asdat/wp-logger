@@ -56,17 +56,50 @@ class Logger_Public
     {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
-        $this->logger = new AnalogLogger;
+        $this->logger = new AnalogLogger();
         $this->logger->handler(File::init('log.txt'));
     }
 
-    public function login()
+    public function login($user_login, $user)
     {
-
+        $this->log_user_action($user, 'logged in');
     }
 
     public function logout()
     {
+        $this->log_user_action(wp_get_current_user(), 'logged out');
+    }
 
+    /**
+     * Write current user information into log file
+     *
+     * @param WP_User $user
+     * @param string $message
+     */
+    protected function log_user_action(WP_User $user, $action)
+    {
+        if ($user->ID) {
+            $this->logger->info(
+                'User {username} {action} from {IP}',
+                [
+                    'username' => $user->user_login,
+                    'IP'       => $this->get_ip(),
+                    'action'   => $action
+                ]
+            );
+        }
+    }
+
+    protected function get_ip()
+    {
+        if ( !empty($_SERVER['HTTP_CLIENT_IP'])) {
+            return $_SERVER['HTTP_CLIENT_IP'];
+        }
+
+        if ( !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            return $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
+
+        return $_SERVER['REMOTE_ADDR'];
     }
 }
